@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="co.sleep.prj.notice.service.NoticeMapper">
+	<select id="noticeSearch" resultType="co.sleep.prj.notice.vo.NoticeVO">
+		select * from notice
+		where id = #{id}
+	</select>
+	
+	<select id="noticeSelectList" resultType="co.sleep.prj.notice.vo.NoticeVO">
+		select * from notice
+	</select>
+	
+	<select id="noticeWriterSearch" resultType="co.sleep.prj.notice.vo.NoticeVO">   <!-- 동적 활용하기 -->
+		select * from notice where
+ 	    <!-- writedate = #{writeDate} -->  <!-- 선행조건 -->
+		<if test ="key.equals('writer')">  <!-- key가 가지고 있는 writer값이 val과 같으면 -->
+			writer = #{val}          <!-- 후행조건 -->
+		</if>
+		<if test="key.equals('title')">   <!-- key가 가지고 있는 title값이 val과 같으면 -->
+			title like '%' || #{val} || '%'
+		</if>
+	</select>
+	
+	<insert id="noticeInsert" parameterType="co.sleep.prj.notice.vo.NoticeVO">
+		insert into notice(id, writer, writedate, title, contents, filename)
+		values(n_id.nextval, #{writer}, #{writeDate}, #{title}, #{contents}, #{fileName})
+	</insert>
+	
+
+</mapper>
